@@ -1,3 +1,4 @@
 pypdf2
 openai
 nmslib
+tqdm

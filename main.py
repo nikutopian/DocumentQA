@@ -1,14 +1,28 @@
+import os
+
 from document_parser import DocumentParser
-from snippet import Snippet
+from openai_utils import OpenAIWrapper
 from snippet_indexer import SnippetEmbeddingIndexer
 
-snippets = DocumentParser.parse('/Users/nikhilramesh/Workspace/ML Papers/DeepBidirectionalLanguageKnowledge.pdf')
-indexer = SnippetEmbeddingIndexer('pdf', snippets)
+filepath = '/Users/nikhilramesh/Downloads/Zomato IPO note (1).pdf'
+name = os.path.basename(filepath)
+
+parser = DocumentParser(name, filepath)
+snippets = parser.get_snippets()
+indexer = SnippetEmbeddingIndexer(name, snippets)
 indexer.create_index()
+wrapper = OpenAIWrapper()
 
 while True:
     search_query = input("Enter a query to search the document: ")
     snippets, distances = indexer.search_index(search_query)
-    print((snippets, distances))
-    import pdb; pdb.set_trace()
+    # for snippet, distance in zip(snippets, distances):
+    #     print(snippet.page_index)
+    #     print(snippet.text)
+    #     print("-"*100)
+    #     print(distance)
+    #     print("-"*100)
+    print(wrapper.custom_gpt_call_code(snippets[0].text, search_query))
+    print("-"*100)
+    print()
 

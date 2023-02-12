@@ -1,8 +1,11 @@
-from typing import Any, Dict, List, Tuple
-from snippet import Snippet
 import os
+from typing import Any, Dict, List, Tuple
+
 import nmslib
 from openai.embeddings_utils import get_embedding
+from tqdm import tqdm
+
+from snippet import Snippet
 
 BASE_PATH = os.path.expanduser("~/data/indexes/")
 
@@ -21,7 +24,7 @@ class SnippetEmbeddingIndexer:
         print("Computing Embeddings on all Snippets ...")
         if self.text_embeddings:
             return
-        for snippet in self.snippets:
+        for snippet in tqdm(self.snippets):
             text_embedding = self.get_embedding(snippet.text)
             self.text_embeddings.append(text_embedding)
     
