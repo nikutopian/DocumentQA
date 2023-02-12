@@ -16,12 +16,11 @@ wrapper = OpenAIWrapper()
 while True:
     search_query = input("Enter a query to search the document: ")
     snippets, distances = indexer.search_index(search_query)
-    # for snippet, distance in zip(snippets, distances):
-    #     print(snippet.page_index)
-    #     print(snippet.text)
-    #     print("-"*100)
-    #     print(distance)
-    #     print("-"*100)
+    for snippet, distance in zip(snippets, distances):
+        print(f"Page Number: {snippet.page_index} :: Similarity Distance: {distance:.2f}")
+        # print(snippet.text)
+
+    print("-"*100)
     print(wrapper.custom_gpt_call_code(snippets[0].text, search_query))
     print("-"*100)
     print()
